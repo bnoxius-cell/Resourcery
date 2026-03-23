@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     }
-})
+}) 
 
 const userModel = mongoose.models.user || mongoose.model('user', userSchema)
 
