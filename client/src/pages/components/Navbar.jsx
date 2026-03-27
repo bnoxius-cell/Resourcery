@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import logo from '../../assets/bitmap2.svg'; // Your bitmap logo!
+import logo from '../../assets/bitmap2.svg';
+import '../../index.css'
 
 const Navbar = () => {
   // 1. Create a state to track if the user has scrolled down
@@ -26,6 +27,8 @@ const Navbar = () => {
   }, []); // The empty array means this only runs once when the Navbar loads
 
   return (
+    {/* 3. The Dynamic Tailwind Wrapper */}
+    {/* Notice the backticks ` ` instead of quotes so we can inject JavaScript logic */}
     <nav 
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out px-6 ${
         isScrolled 
