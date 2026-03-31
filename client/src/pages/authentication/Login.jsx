@@ -201,26 +201,20 @@ export default function Login() {
 
               {/* Remember Me & Forgot Password */}
               <div className="mt-5 flex items-center justify-between">
-                
-                {/* Custom Zaunite Checkbox */}
                 <label className="flex items-center gap-3 cursor-pointer group">
+                  {/* Remember Me Checkbox*/}
                   <div className="relative flex items-center justify-center w-5 h-5">
-                    
-                    {/* 1. The Hidden Native Checkbox */}
                     <input 
                       type="checkbox" 
                       className="sr-only" 
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
-                    
-                    {/* 2. The Mechanical Box */}
                     <div className={`w-5 h-5 border-2 rounded-sm flex items-center justify-center transition-all duration-75 ${
                       rememberMe 
                         ? 'border-emerald-500 bg-emerald-900/30 shadow-[0_0_12px_rgba(16,185,129,0.3)]' 
                         : 'border-slate-700 bg-black/50 shadow-none'
                     }`}>
-                       {/* 3. The Sharp Checkmark */}
                        <svg 
                          className={`w-3.5 h-3.5 text-emerald-400 transition-all duration-75 transform ${
                            rememberMe ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
@@ -246,14 +240,14 @@ export default function Login() {
               </div>
             </div>
 
-            {/* ---> NEW: Error Message Display <--- */}
+            {/* ---> Error Message Display <--- */}
             {errorMessage && (
               <div className="text-red-400 text-sm font-bold text-center bg-red-900/20 py-3 border border-red-500/30 rounded-sm">
                 {errorMessage}
               </div>
             )}
 
-            {/* Zaunite Submit Button (onClick removed!) */}
+            {/* Zaunite Submit Button */}
             <button 
               type="submit"
               className="w-full mt-4 px-6 py-4 rounded-sm font-black text-[#09090B] tracking-widest uppercase text-sm

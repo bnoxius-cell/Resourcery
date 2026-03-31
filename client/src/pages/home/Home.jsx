@@ -1,4 +1,5 @@
 import React from 'react'
+import AnimatedBat from '../components/AnimatedBat'
 
 const Home = () => {
   return (
@@ -21,6 +22,10 @@ const Home = () => {
              <h3 className="text-emerald-500 font-black tracking-widest uppercase text-xs drop-shadow-[0_0_10px_rgba(16,185,129,0.8)]">Restricted Archives</h3>
              <div className="w-12 h-1 mt-2 bg-gradient-to-r from-emerald-500 to-transparent rounded-full"></div>
           </div>
+          
+          <AnimatedBat />
+
+
         </div>
   )
 }
