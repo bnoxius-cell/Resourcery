@@ -1,0 +1,42 @@
+.animated-eye-btn {
+  padding: 0;
+  display: grid;
+  place-items: center;
+  height: 100%;
+  aspect-ratio: 1;
+  background: transparent;
+  border: none;
+  color: inherit; /* Inherits the color from your LoginForm parent */
+  cursor: pointer;
+  outline: none;
+  
+  /* Smooth transition for when parent container changes text color */
+  transition: color 0.2s ease-in-out;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+  }
+
+  .eye {
+    /* The white glint inside the pupil */
+    .eye-glint {
+      fill: #ffffff; 
+    }
+  }
+
+  /* Screen reader utility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
