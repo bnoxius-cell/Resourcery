@@ -3,15 +3,46 @@ import { useNavigate } from 'react-router-dom';
 import { Mail } from 'lucide-react';
 import AnimatedEye from '../components/AnimatedEye';
 
+// Using our scalable API client!
+import apiClient from '../../lib/axios';
+
 export default function Login() {
   const navigate = useNavigate();
-  
-  // --- Scramble Animation State ---
+
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayPassword, setDisplayPassword] = useState("");  
   const [showPassword, setShowPassword] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setErrorMessage(""); // Clear old errors
+
+    try {
+      // Clean, scalable API call using the client we built
+      const response = await apiClient.post('/auth/login', {
+        email: email,
+        password: password,
+        rememberMe: rememberMe
+      });
+
+      // If successful, the backend has set the cookie. Teleport to Home!
+      if (response.data.success) {
+         navigate('/');
+      } else {
+        setErrorMessage(response.data.message);
+      }
+    } catch (error) {
+      // If the backend sends an error (like "Invalid password"), display it
+      setErrorMessage(
+        error.response?.data?.message || "Connection to the archive failed."
+      );
+    }
+  };
 
   // --- Scramble Toggle Logic ---
   const handleToggle = () => {
@@ -24,6 +55,25 @@ export default function Login() {
     setShowPassword(!showPassword);
     setIsAnimating(true);
   };
+
+  useEffect(() => {
+    const enforceLogout = async () => {
+      try {
+        // 1. Ask the backend if a valid cookie exists
+        const authCheck = await apiClient.post('/auth/is-authenticated');
+        
+        if (authCheck.data.success) {
+          // 2. If they are logged in, instantly hit the logout route to clear the cookie
+          await apiClient.post('/auth/logout');
+          console.log("Previous session wiped. Vault locked.");
+        }
+      } catch (error) {
+        // If they aren't logged in, the check fails silently and they just see the login form.
+      }
+    };
+
+    enforceLogout();
+  }, []);
 
   // --- Scramble Decoding Effect ---
   useEffect(() => {
@@ -103,12 +153,15 @@ export default function Login() {
             <p className="text-slate-400 text-sm">Please enter your details to sign in.</p>
           </div>
 
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleLogin}>
             
             {/* Email Field */}
             <div className="relative group/input">
               <input 
                 type="email" 
+                spellCheck="false"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#09090B] border border-slate-700/80 rounded-sm px-4 py-4 text-white text-base focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/50 transition-all duration-300 placeholder:text-white/60 font-medium pr-12"
                 placeholder="Email"
               />
@@ -162,14 +215,14 @@ export default function Login() {
                     />
                     
                     {/* 2. The Mechanical Box */}
-                    <div className={`w-5 h-5 border-2 rounded-sm flex items-center justify-center transition-all duration-35 ${
+                    <div className={`w-5 h-5 border-2 rounded-sm flex items-center justify-center transition-all duration-75 ${
                       rememberMe 
                         ? 'border-emerald-500 bg-emerald-900/30 shadow-[0_0_12px_rgba(16,185,129,0.3)]' 
                         : 'border-slate-700 bg-black/50 shadow-none'
                     }`}>
                        {/* 3. The Sharp Checkmark */}
                        <svg 
-                         className={`w-3.5 h-3.5 text-emerald-400 transition-all duration-35 transform ${
+                         className={`w-3.5 h-3.5 text-emerald-400 transition-all duration-75 transform ${
                            rememberMe ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
                          }`} 
                          fill="none" 
@@ -192,10 +245,17 @@ export default function Login() {
                 </a>
               </div>
             </div>
-            {/* Zaunite Submit Button */}
+
+            {/* ---> NEW: Error Message Display <--- */}
+            {errorMessage && (
+              <div className="text-red-400 text-sm font-bold text-center bg-red-900/20 py-3 border border-red-500/30 rounded-sm">
+                {errorMessage}
+              </div>
+            )}
+
+            {/* Zaunite Submit Button (onClick removed!) */}
             <button 
-              type="button"
-              onClick={() => navigate('/home')}
+              type="submit"
               className="w-full mt-4 px-6 py-4 rounded-sm font-black text-[#09090B] tracking-widest uppercase text-sm
                 bg-gradient-to-r from-emerald-500 via-emerald-400 to-purple-500 
                 hover:to-purple-400 hover:from-emerald-400
