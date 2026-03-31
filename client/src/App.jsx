@@ -15,11 +15,10 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const verifyAccess = async () => {
       try {
-        // Pings the exact endpoint you set up in authRoutes.js
         const response = await apiClient.post('/auth/is-authenticated');
         
         if (response.data.success) {
-          setIsAuth(true); // The cookie is valid!
+          setIsAuth(true); // The cookie is valid.
         } else {
           setIsAuth(false); // No valid cookie found.
         }
@@ -37,7 +36,7 @@ const ProtectedRoute = ({ children }) => {
       <div className="min-h-screen bg-[#09090B] flex flex-col items-center justify-center gap-4">
         <div className="w-10 h-10 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
         <p className="text-emerald-500/50 text-xs font-bold tracking-widest uppercase animate-pulse">
-          Decrypting Vault Access...
+          Accessing servers...
         </p>
       </div>
     );
@@ -48,7 +47,7 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  // If they have the verified cookie, let them into the Home page!
+  // If they have the verified cookie, let them into the Home page
   return children;
 };
 

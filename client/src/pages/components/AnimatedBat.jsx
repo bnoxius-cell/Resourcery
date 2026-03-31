@@ -1,11 +1,10 @@
 import React from 'react';
-import './AnimatedBat.scss';
+import style from './AnimatedBat.module.scss';
 
 function AnimatedBat() {
   return (
-    <div className="bat"></div>
+    <div className={style.bat}></div>
   );
 }
 
-
-export default AnimatedBat
+export default AnimatedBat;

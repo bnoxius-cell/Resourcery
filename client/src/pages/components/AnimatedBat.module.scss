@@ -10,17 +10,6 @@ $c: #fff;     /* 1 */
 $size: 4;     /* 2 */
 $speed: .4s;   /* 3 */
 
-/* Scaffolding */
-html,
-body {
-  height: 100%;
-}
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* Bat */
 .bat {
   width: 1px;

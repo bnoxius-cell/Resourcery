@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
-import "./AnimatedEye.scss";
+import styles from "./AnimatedEye.module.scss";
 
 export default function AnimatedEye({ isVisible, onClick }) {
   const buttonRef = useRef(null);
@@ -46,15 +46,12 @@ export default function AnimatedEye({ isVisible, onClick }) {
   }, []);
 
   // Open/Close Morphing and Blinking Logic
-  // Open/Close Morphing and Blinking Logic
   useEffect(() => {
     const duration = 0.05;
     
-    // The eye should close if the password is shown OR if there is text in the input
     const shouldClose = isVisible;
 
     const startBlinking = () => {
-      // Don't blink if the eye is supposed to be closed
       if (shouldClose) return; 
 
       const delay = gsap.utils.random(2, 8);
@@ -74,11 +71,9 @@ export default function AnimatedEye({ isVisible, onClick }) {
     if (blinkTl.current) blinkTl.current.kill();
 
     if (shouldClose) {
-      // Transition to Closed
       gsap.to(upperLidRef.current, { attr: { d: paths.lidClosed }, duration });
       gsap.to(maskPathRef.current, { attr: { d: paths.maskClosed }, duration });
     } else {
-      // Transition to Open
       gsap.to(upperLidRef.current, { attr: { d: paths.lidOpen }, duration });
       gsap.to(maskPathRef.current, { attr: { d: paths.maskOpen }, duration, onComplete: startBlinking });
     }
@@ -92,7 +87,7 @@ export default function AnimatedEye({ isVisible, onClick }) {
     <button
       ref={buttonRef}
       type="button"
-      className="animated-eye-btn"
+      className={styles['animated-eye-btn']}
       onClick={onClick}
       title={isVisible ? "Hide Password" : "Reveal Password"}
       aria-pressed={isVisible}
@@ -131,13 +126,13 @@ export default function AnimatedEye({ isVisible, onClick }) {
         />
         
         <g mask="url(#eye-mask-state)">
-          <g className="eye" ref={eyeRef}>
+          <g className={styles.eye} ref={eyeRef}>
             <circle cy="12" cx="12" r="4" fill="currentColor" />
-            <circle cy="11" cx="13" r="1" fill="white" className="eye-glint" />
+            <circle cy="11" cx="13" r="1" fill="white" className={styles['eye-glint']} />
           </g>
         </g>
       </svg>
-      <span className="sr-only">Reveal Password</span>
+      <span className={styles['sr-only']}>Reveal Password</span>
     </button>
   );
 }
