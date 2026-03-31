@@ -46,14 +46,19 @@ export default function AnimatedEye({ isVisible, onClick }) {
   }, []);
 
   // Open/Close Morphing and Blinking Logic
+  // Open/Close Morphing and Blinking Logic
   useEffect(() => {
-    const duration = 0.125;
+    const duration = 0.05;
+    
+    // The eye should close if the password is shown OR if there is text in the input
+    const shouldClose = isVisible;
 
     const startBlinking = () => {
-      if (!isVisible) return; 
+      // Don't blink if the eye is supposed to be closed
+      if (shouldClose) return; 
 
       const delay = gsap.utils.random(2, 8);
-      const blinkDuration = 0.075;
+      const blinkDuration = 0.05;
       const repeat = Math.random() > 0.5 ? 3 : 1;
 
       blinkTl.current = gsap.timeline({
@@ -66,17 +71,16 @@ export default function AnimatedEye({ isVisible, onClick }) {
       .to(maskPathRef.current, { attr: { d: paths.maskClosed }, duration: blinkDuration }, 0);
     };
 
-    // Kill any ongoing blink animations before transitioning
     if (blinkTl.current) blinkTl.current.kill();
 
-    if (isVisible) {
-      // Transition to Open
-      gsap.to(upperLidRef.current, { attr: { d: paths.lidOpen }, duration });
-      gsap.to(maskPathRef.current, { attr: { d: paths.maskOpen }, duration, onComplete: startBlinking });
-    } else {
+    if (shouldClose) {
       // Transition to Closed
       gsap.to(upperLidRef.current, { attr: { d: paths.lidClosed }, duration });
       gsap.to(maskPathRef.current, { attr: { d: paths.maskClosed }, duration });
+    } else {
+      // Transition to Open
+      gsap.to(upperLidRef.current, { attr: { d: paths.lidOpen }, duration });
+      gsap.to(maskPathRef.current, { attr: { d: paths.maskOpen }, duration, onComplete: startBlinking });
     }
 
     return () => {
